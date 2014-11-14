@@ -6,14 +6,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var flash = require('express-flash');
 var session = require('express-session');
-var routes = require('./routes/index');
-var users = require('./routes/users');
 //necesario para utilizar los verbos put y delete en formularios
 var methodOverride = require('method-override');
+
+var routes = require('./routes/index');
+var users = require('./routes/users');
  
 var app = express();
  
-//configuración para ejs
 app.set('views', path.join(__dirname, 'views'));
 app.engine("html", require("ejs").renderFile);
 app.set('view engine', 'html');
@@ -34,18 +34,14 @@ app.use(methodOverride(function(req, res){
   }
 }));
  
-//app.use(cookieParser());
 app.use(cookieParser('keyboard cat'));
 app.use(session({secret: '<mysecret>', 
                  saveUninitialized: true,
                  resave: true}));
-// app.use(express.session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// for flash messages
- 
 app.use('/', routes);
 app.use('/users', users);
 

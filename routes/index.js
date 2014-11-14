@@ -18,7 +18,6 @@ router.get('/users/create', function(req, res)
 /* Creamos un nuevo usuario */
 router.post("/user", function(req,res)
 {
-    // console.log(req);
     //creamos un objeto con los datos a insertar del usuario
     var userData = {
         id : null,
@@ -27,14 +26,14 @@ router.post("/user", function(req,res)
         password : req.body.password,
         created_at : null
     };
-    // req.flash('info', 'Usuario añadido correctamente');
-    // res.redirect("/users/");
+    
     UserModel.insertUser(userData,function(error, data)
     {
-        //si el usuario se ha insertado correctamente mostramos su info
+        //si el usuario se ha insertado correctamente mostramos un 
+        // mensaje y redireccionados a todos los usuarios
         if(data && data.insertId)
         {
-          //  req.flash('info', 'Usuario añadido correctamente');
+            req.flash('info', 'Usuario añadido correctamente.');
             res.redirect("/users/");
         }
         else
@@ -55,6 +54,7 @@ router.put('/user/', function(req, res)
         //si el usuario se ha actualizado correctamente mostramos un mensaje
         if(data && data.msg)
         {
+            req.flash('info', 'Usuario editado correctamente.');
             res.redirect("/users/");
         }
         else
@@ -125,6 +125,7 @@ router.delete("/user/", function(req, res)
     {
         if(data && data.msg === "deleted" || data.msg === "notExist")
         {
+            req.flash('info', 'Usuario borrado correctamente.');
             res.redirect("/users/");
         }
         else

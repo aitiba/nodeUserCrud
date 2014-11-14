@@ -1,5 +1,6 @@
 REST con nodejs, express 4 y mysql
 
+Usado este tutorial para iniciar la app:
 http://uno-de-piera.com/servicio-rest-con-nodejs-express-4-y-mysql/
 
 
@@ -15,6 +16,6 @@ Pasos para ponerlo en marcha:
 
 - Crear una base de datos
 - Importar una sql de sql/
-- COnfigurar la conexion en models/users.js
+- Configurar la conexion en models/users.js
 
 - npm start / nodemon
