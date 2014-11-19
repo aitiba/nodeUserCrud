@@ -74,8 +74,8 @@ router.post("/user", function(req,res)
         }
         else
         {
-            // console.log("error");
-            // res.json(500,{"msg":"Error"});
+            console.log("error");
+            res.json(500,{"msg":"Error"});
         }
     });
 });
