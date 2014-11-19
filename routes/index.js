@@ -52,14 +52,13 @@ router.post("/user", function(req,res)
         // mensaje y redireccionados a todos los usuarios
         if(data && data.insertId)
         {
+            req.flash('info', 'Usuario añadido correctamente.');
             //res.redirect("/users/");
-            //res.render('index', { title: 'Servicio rest con nodejs, express 4 y mysql', data: null});
             UserModel.getUsers(function(error, data)
             {
                 //si existe el usuario mostramos el formulario
                 if (typeof data !== 'undefined')
                 {
-                    req.flash('info', 'Usuario añadido correctamente.');
                     res.render("show",{
                         title : "Servicio rest con nodejs, express 4 y mysql",
                         users : data
