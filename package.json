@@ -19,6 +19,7 @@
     "express-flash": "0.0.2",
     "session": "~0.1.0",
     "express-session": "~1.9.1",
-    "csrf": "~2.0.2"
+    "csrf": "~2.0.2",
+    "validator": "~3.22.1"
   }
 }

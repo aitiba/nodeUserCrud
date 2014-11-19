@@ -120,5 +120,19 @@ userModel.deleteUser = function(id, callback)
         });
     }
 }
+
+//mira si ese Username existe
+userModel.uniqueUsername = function(username, callback)
+{
+    if(connection)
+    {
+        var sql = 'SELECT count(*)  as count FROM `users` WHERE username = ' + connection.escape(username);
+        connection.query(sql, function(err, row)
+        {
+            // console.log(row.count);
+            callback(null,{"msg":row});
+        });
+    }
+}
 //exportamos el objeto para tenerlo disponible en la zona de rutas
 module.exports = userModel;

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var UserModel = require('../models/users');
+var validator = require('validator');
  
 /* Mostramos el formualario para crear usuarios nuevos */
 router.get('/', function(req, res)
@@ -11,7 +12,7 @@ router.get('/', function(req, res)
 
 router.get('/users/create', function(req, res)
 {
-  res.render('index', { title: 'Servicio rest con nodejs, express 4 y mysql'});
+  res.render('index', { title: 'Servicio rest con nodejs, express 4 y mysql', data: null});
   // res.redirect("/users/");
 });
  
@@ -27,19 +28,54 @@ router.post("/user", function(req,res)
         created_at : null
     };
     
+    //validate
+
+    //username
+    username = validator.isLength(userData.username, 6, 250); 
+    UserModel.uniqueUsername(userData.username, function(error, data)
+    {
+        if (data.msg[0].count != 0) {
+            console.log("EXIST");
+            // req.data("exist");
+            // res.render('index');
+            res.render('index', { title: 'Servicio rest con nodejs, express 4 y mysql', data: 'exist'});
+        } else {
+            console.log("UNIQUE");
+        }
+    });
+    // //email
+    email = validator.isEmail(userData.email);
+
     UserModel.insertUser(userData,function(error, data)
     {
         //si el usuario se ha insertado correctamente mostramos un 
         // mensaje y redireccionados a todos los usuarios
         if(data && data.insertId)
         {
-            req.flash('info', 'Usuario añadido correctamente.');
-            res.redirect("/users/");
+            //res.redirect("/users/");
+            //res.render('index', { title: 'Servicio rest con nodejs, express 4 y mysql', data: null});
+            UserModel.getUsers(function(error, data)
+            {
+                //si existe el usuario mostramos el formulario
+                if (typeof data !== 'undefined')
+                {
+                    req.flash('info', 'Usuario añadido correctamente.');
+                    res.render("show",{
+                        title : "Servicio rest con nodejs, express 4 y mysql",
+                        users : data
+                    });
+                }
+                //en otro caso mostramos un error
+                else
+                {
+                    res.json(404,{"msg":"notExist"});
+                }
+            });
         }
         else
         {
-            console.log("error");
-            res.json(500,{"msg":"Error"});
+            // console.log("error");
+            // res.json(500,{"msg":"Error"});
         }
     });
 });
